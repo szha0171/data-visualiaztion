@@ -1,0 +1,90 @@
+{
+    "config": {
+        "legend": { "orient": "right", "layout": { "bottom": { "anchor": "middle" } } },
+        "view": {
+            "stroke": "transparent"
+        }
+    },
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 600,
+    "height": 500,
+    "title": {
+        "text": "Median Age per Continent",
+        "fontSize": 18
+    },
+    "data": {
+        "url": "https://raw.githubusercontent.com/szha0171/fit-3179-assignment-2/main/Bar_data%20(2).csv"
+    },
+    "params": [
+        {
+            "name": "Continent_selection",
+            "bind": {
+                "input": "select",
+                "options": [
+                    null,
+                    "North America",
+                    "South America",
+                    "Europe",
+                    "Africa",
+                    "Asia",
+                    "Oceania"
+                ],
+                "labels": [
+                    "Show All",
+                    "North America",
+                    "South America",
+                    "Europe",
+                    "Africa",
+                    "Asia",
+                    "Oceania"
+                ],
+                "name": "Continent Selection: "
+            }
+        }
+    ],
+    "transform": [
+        {
+            "filter": "Continent_selection == null || datum.Continent == Continent_selection"
+        }
+    ],
+    "encoding": {
+        "x": {
+            "field": "MedAge",
+            "type": "quantitative",
+            "title": "Median Age",
+            "scale": { "type": "linear", "domain": [0, 50] }
+        },
+        "y": {
+            "field": "Country Name",
+            "type": "ordinal"
+        }
+    },
+    "layer": [{
+            "mark": "bar",
+            "encoding": {
+                "color": {
+                    "field": "Continent",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": [
+                            "North America",
+                            "South America",
+                            "Europe",
+                            "Africa",
+                            "Asia",
+                            "Oceania"
+                        ],
+                        "range": [
+                            "#e41a1c",
+                            "#984ea3",
+                            "#ff7f00",
+                            "#a6cee3",
+                            "#377eb8",
+                            "#a65628"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+  }

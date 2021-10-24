@@ -1,0 +1,159 @@
+{
+    "config": {
+        "legend": { "orient": "right", "layout": { "bottom": { "anchor": "middle" } } },
+        "view": {
+            "stroke": "transparent"
+        }
+    },
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 500,
+    "background":"#8281c2d5",
+    "height": 500,
+    "title": {
+        "text": "Urban Population And Fertility Rates",
+        "color": "#092215",
+        "fontSize": 18
+    },
+    "background": "#F5F5F5",
+    "data": {
+        "url": "https://raw.githubusercontent.com/szha0171/fit-3179-assignment-2/main/Merged_Dataset.csv"
+    },
+    "params": [
+        {   
+            "name": "Population_Above",
+            "value": 0,
+            "bind": {
+                "input": "range",
+                "min": 0,
+                "max": 10000,
+                "step": 1000,
+                "name": "Minimum Population: "
+            }
+        },
+        {
+            "name": "Continent_selection",
+            "bind": {
+                "input": "select",
+                "options": [
+                   
+                    "North America",
+                    "South America",
+                    "Europe",
+                    "Africa",
+                    "Asia",
+                    "Oceania",
+                    null
+                ],
+                "labels": [
+                    
+                    "North America",
+                    "South America",
+                    "Europe",
+                    "Africa",
+                    "Asia",
+                    "Oceania",
+                    "Show All"
+                ],
+                "name": "Continent Selection: "
+            }
+        }
+    ],
+    "transform": [
+        { "filter": "datum.UrbanPop > Population_Above" },
+        {
+            "filter": "Continent_selection == null || datum.Continent == Continent_selection"
+        }
+    ],
+    "encoding": {
+        "x": {
+            "field": "UrbanPop",
+            "type": "quantitative",
+            "title": "Population Per Square Km Urban Area",
+            "scale": { "type": "linear", "domain": [0,10000] },
+            "axis": { "tickColor": null, "labelFontSize": 15 }
+        },
+        "y": {
+            "field": "FertRate",
+            "type": "quantitative",
+            "title": "Fertility Rate",
+            "scale": { "type": "linear", "domain": [1, 7.5] }
+        }
+    },
+    "layer": [{
+        "params": [
+            {
+            "name": "grid",
+            "select": "interval",
+            "bind": "scales"
+        }
+        ],
+            
+            "mark": "circle",
+            "encoding": {
+                "size": {
+                    "field": "UrbanPop",
+                    "type": "quantitative",
+                    "scale": {
+                        "type": "threshold",
+                        "domain": [1000, 2000, 3000, 4000, 5000],
+                        "range": [10, 50, 150, 200, 300, 400]
+                    },
+                    "legend": { "format": ".1s" }
+                },
+                "color": {
+                    "field": "Continent",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": [
+                            "North America",
+                            "South America",
+                            "Europe",
+                            "Africa",
+                            "Asia",
+                            "Oceania"
+                        ],
+                        "range": [
+                            "#e41a1c",
+                            "#984ea3",
+                            "#ff7f00",
+                            "#a6cee3",
+                            "#377eb8",
+                            "#a65628"
+                        ]
+                    }
+                },
+                "tooltip": [
+                    { "field": "Country Name", "type": "nominal" },
+                    { "field": "UrbanPop", "type": "quantitative", "format": "," },
+                    { "field": "FertRate", "type": "quantitative", "format": "," }
+                ]
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "align": "right",
+                "baseline": "middle",
+                "dx": -12,
+                "fontSize": 11.5,
+                "fontStyle": "italic"
+            },
+            "encoding": {
+                "text": { "field": "Country Name", "type": "nominal" },
+                "color": { "value": "black" },
+                "opacity": {
+                    "condition": {
+                        "test": "datum['Country Name'] == 'China' || datum['Country Name'] == 'Australia' || datum['Country Name'] == 'United Kingdom' || datum['Country Name'] == 'Belgium' || datum['Country Name'] == 'India' || datum['Country Name'] == 'Brazil' ||  datum['Country Name'] == 'United States'||  datum['Country Name'] == 'Chad'||  datum['Country Name'] == 'Mali'||  datum['Country Name'] == 'Canada'||  datum['Country Name'] == 'Uruguay'",
+                        "value": 1
+                    },
+                    "value": 0
+                },
+                "tooltip": [
+                    { "field": "Country Name", "type": "nominal" },
+                    { "field": "UrbanPop", "type": "quantitative", "format": "," },
+                    { "field": "FertRate", "type": "quantitative", "format": "," } 
+                ]
+            }
+        }
+    ]
+  }

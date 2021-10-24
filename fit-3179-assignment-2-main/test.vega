@@ -1,0 +1,79 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "height": 500,
+  "width": 500,
+  "title": "population,DensitySquareKm,Migrants(net)",
+  "data": {
+    "url": "https://raw.githubusercontent.com/szha0171/fit-3179-assignment-2/main/Merged_Dataset.csv"
+  },
+ 
+  "params": [
+      {
+          "name": "Population_Above",
+          "value": 0,
+          "bind": {
+              "input": "range",
+              "min": 0,
+              "max": 100000000,
+              "step": 1000000,
+              "name": "Minimum Population: "
+          }
+      },
+      {
+          "name": "Continent_selection",
+          "bind": {
+              "input": "select",
+              "options": [
+                  null,
+                  "North America",
+                  "South America",
+                  "Europe",
+                  "Africa",
+                  "Asia",
+                  "Oceania"
+              ],
+              "labels": [
+                  "Show All",
+                  "North America",
+                  "South America",
+                  "Europe",
+                  "Africa",
+                  "Asia",
+                  "Oceania"
+              ],
+              "name": "Continent Selection: "
+          }
+      }
+  ],
+  "transform": [
+      { "filter": "datum.Population > Population_Above" },
+      {
+          "filter": "Continent_selection == null || datum.Continent == Continent_selection"
+      }
+  ],
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "field": "UrbanPop",
+      "type": "quantitative",
+      "title":"Urban population percentage",
+      "axis": {"tickCount": 10},
+      "scale": {"type": "linear",  "domain":[1, 10000]}
+    },
+    "y": {
+      "field": "FertRate",
+      "type": "quantitative",
+      "title":"fertility rate "
+    },
+    "size": {"field": "Normalised Population", "type": "quantitative",  "scale": {"type":"threshold","domain": [50, 100,150,200,250]}
+},
+    
+   
+    "tooltip": [
+      {"field": "Country(or dependency)", "type": "nominal"},
+      {"field": "Normalised Population", "type": "quantitative", "format": ","},
+      {"field": "UrbanPop", "type": "quantitative", "format": ","}
+     
+    ]
+
+  }
